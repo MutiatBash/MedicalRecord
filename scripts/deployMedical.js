@@ -1,7 +1,7 @@
 
 async function main() {
 	const [deployer] = await ethers.getSigners();
-	console.log(`Deploying contracts with the account: ${deployer.address}`);
+	console.log(`Deploying contracts with the account: ${deployer?.address}`);
 
 	const MedicalRecordFactory = await ethers.getContractFactory(
 		"MedicalRecordFactory"
