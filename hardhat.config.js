@@ -1,12 +1,12 @@
 require("@nomicfoundation/hardhat-toolbox");
-const { projectId, privateKey } = require("./secret.json");
+const { privateKey } = require("./privateKeys.json");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
 	solidity: "0.8.19",
 	networks: {
 		mumbai: {
-			url: "https://rpc-mumbai.maticvigil.com/",
+			url: "https://rpc.ankr.com/polygon_mumbai",
 			accounts: [privateKey],
 		},
 	},

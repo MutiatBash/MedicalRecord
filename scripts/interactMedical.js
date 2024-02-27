@@ -1,22 +1,26 @@
 const { ethers } = require("hardhat");
 const { JsonRpcProvider } = require("@ethersproject/providers");
+const { privateKey } = require("../privateKeys.json");
 const contractAbi = require("../abi.json");
 
 async function main() {
-	const provider = new JsonRpcProvider(
-		"https://polygon-mumbai.g.alchemy.com/v2/demo"
-	);
-	const signer = await provider.getSigner(); 
+	const provider = new JsonRpcProvider("https://rpc.ankr.com/polygon_mumbai");
 
-	const contractAddress = "0xdF4E6F637FFBdF87c13C65191C617E9275bb06C0";
-	const contract = new ethers.Contract(contractAddress, contractAbi, signer); 
+	const wallet = new ethers.Wallet(privateKey, provider);
+	const contractAddress = "0x3b39BD54F18AF286353461EA6A7283C2b3328153";
+	const contract = new ethers.Contract(contractAddress, contractAbi, wallet);
 
 	try {
+		
+		const managementAddress = await contract.hospitalManagement();
+		console.log("Hospital Management Address:", managementAddress);
+
+
 		const record = await contract.createMedicalRecord(
 			"0xD7E2286E40c0e4755d86a1d75C7094e48bAC56Fd",
-			"Amy Blessing",
+			"Blessing",
 			25,
-			"22-01-1998",
+			"January 22 1989",
 			"Female",
 			"Malaria"
 		);
@@ -35,3 +39,6 @@ main()
 		console.error(error);
 		process.exit(1);
 	});
+
+
+

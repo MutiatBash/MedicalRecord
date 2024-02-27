@@ -8,19 +8,30 @@ contract MedicalRecordFactory {
     address[] public deployedMedicalRecords;
 
     modifier onlyHospitalManagement() {
-        require(msg.sender == hospitalManagement, "Only hospital management can call this function");
+        require(
+            msg.sender == hospitalManagement,
+            "Only hospital management can create a record"
+        );
         _;
     }
 
-    event MedicalRecordCreated(address indexed patientAddress, address indexed medicalRecordContract);
+    event MedicalRecordCreated(
+        address indexed patientAddress,
+        address indexed medicalRecordContract
+    );
 
     constructor() {
         hospitalManagement = msg.sender;
     }
 
-    function setHospitalManagement(address newManagement) external onlyHospitalManagement {
+    function setHospitalManagement(address newManagement)
+        external
+        onlyHospitalManagement
+    {
         hospitalManagement = newManagement;
     }
+
+    event DebugLog(address sender, address hospitalManagement, bool condition);
 
     function createMedicalRecord(
         address _patientAddress,
@@ -28,22 +39,36 @@ contract MedicalRecordFactory {
         uint256 _age,
         string memory _dateOfBirth,
         string memory _sex,
-        string memory _initialCondition
+        string memory _condition
     ) external onlyHospitalManagement {
-
-        MedicalRecord newRecord = new MedicalRecord(
-           hospitalManagement
+        emit DebugLog(
+            msg.sender,
+            hospitalManagement,
+            msg.sender == hospitalManagement
         );
+
+        MedicalRecord newRecord = new MedicalRecord();
         emit MedicalRecordCreated(address(newRecord), msg.sender);
 
-        newRecord.createMedicalRecord(_patientAddress, _name, _age, _dateOfBirth, _sex, _initialCondition);
+        newRecord.createMedicalRecord(
+            _patientAddress,
+            _name,
+            _age,
+            _dateOfBirth,
+            _sex,
+            _condition
+        );
 
         deployedMedicalRecords.push(address(newRecord));
 
         emit MedicalRecordCreated(_patientAddress, address(newRecord));
     }
 
-    function getDeployedMedicalRecords() external view returns (address[] memory) {
+    function getDeployedMedicalRecords()
+        external
+        view
+        returns (address[] memory)
+    {
         return deployedMedicalRecords;
     }
 }
