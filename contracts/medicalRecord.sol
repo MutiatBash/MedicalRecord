@@ -62,4 +62,13 @@ contract MedicalRecord {
         }
         return "";
     }
+
+     function getAllPatients() external view returns (Patient[] memory) {
+        return patients;
+    }
+
+    function getPatientByIndex(uint256 index) external view returns (Patient memory) {
+        require(index < patients.length, "Patient not found");
+        return patients[index];
+    }
 }

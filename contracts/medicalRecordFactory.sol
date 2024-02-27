@@ -31,7 +31,7 @@ contract MedicalRecordFactory {
         hospitalManagement = newManagement;
     }
 
-    event DebugLog(address sender, address hospitalManagement, bool condition);
+    event Debug(address sender, address hospitalManagement, bool condition);
 
     function createMedicalRecord(
         address _patientAddress,
@@ -41,7 +41,7 @@ contract MedicalRecordFactory {
         string memory _sex,
         string memory _condition
     ) external onlyHospitalManagement {
-        emit DebugLog(
+        emit Debug(
             msg.sender,
             hospitalManagement,
             msg.sender == hospitalManagement
@@ -70,5 +70,15 @@ contract MedicalRecordFactory {
         returns (address[] memory)
     {
         return deployedMedicalRecords;
+    }
+
+    function getAllPatientsFromRecord(address recordAddress) public view returns (MedicalRecord.Patient[] memory) {
+        MedicalRecord record = MedicalRecord(recordAddress);
+        return record.getAllPatients();
+    }
+
+    function getPatientFromRecordByIndex(address recordAddress, uint256 index) public view returns (MedicalRecord.Patient memory) {
+        MedicalRecord record = MedicalRecord(recordAddress);
+        return record.getPatientByIndex(index);
     }
 }

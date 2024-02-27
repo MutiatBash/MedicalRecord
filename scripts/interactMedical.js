@@ -7,7 +7,7 @@ async function main() {
 	const provider = new JsonRpcProvider("https://rpc.ankr.com/polygon_mumbai");
 
 	const wallet = new ethers.Wallet(privateKey, provider);
-	const contractAddress = "0x3b39BD54F18AF286353461EA6A7283C2b3328153";
+	const contractAddress = "0xA67054D05aA74e6C00442Ded2001B251f67196E5";
 	const contract = new ethers.Contract(contractAddress, contractAbi, wallet);
 
 	try {
